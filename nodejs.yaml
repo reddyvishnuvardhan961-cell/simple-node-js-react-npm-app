@@ -14,16 +14,16 @@ metadata:
   name: nodejsapp-deployment
   namespace: nodejsapp
   labels:
-    app: "nodejsapp"
+    app: nodejsapp
 spec:
   replicas: 3 
   selector:
     matchLabels:
-      app: "nodejsapp"
+      app: nodejsapp
   template:
     metadata:
       labels:
-        app: "nodejsapp"
+        app: nodejsapp
     spec:
       containers:
         - name: nodejs-container
@@ -47,11 +47,11 @@ metadata:
   name: nodejsapp-service
   namespace: nodejsapp
   labels:
-    app: "nodejsapp"
+    app: nodejsapp
 spec:
   selector:
-    app: "nodejsapp"  
-   type: NodePort
+    app: nodejsapp  
+    type: NodePort
   ports:
     - name: nodejsapp-port
       port: 80
