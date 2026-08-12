@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nodejsapp
+  labels:
+    tier: production
+    team: backend
+  annotations:
+    description: "Main production environment for core services"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejsapp-deployment
+  namespace: nodejsapp
+  labels:
+    app: "nodejsapp"
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: "nodejsapp"
+  template:
+    metadata:
+      labels:
+        app: "nodejsapp"
+    spec:
+      containers:
+        - name: nodejs-container
+          image: vishnuthirda/nodejsimage:v1
+          ports:
+            - containerPort: 3000
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejsapp-service
+  namespace: nodejsapp
+  labels:
+    app: "nodejsapp"
+spec:
+  selector:
+    app: "nodejsapp"  
+   type: NodePort
+  ports:
+    - name: nodejsapp-port
+      port: 80
+      targetPort: 3000
+      nodePort: 30001
